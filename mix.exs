@@ -24,6 +24,8 @@ defmodule Supermarket.MixProject do
     [
       {:ex_money, "~> 5.21"},
       {:ex_cldr, "~> 2.42"},
+      {:ex_cldr_numbers, "~> 2.35"},
+      {:ex_cldr_currencies, "~> 2.16"},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.38", only: :dev, runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
