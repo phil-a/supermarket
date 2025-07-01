@@ -8,5 +8,5 @@ defmodule Supermarket.PricingRule do
   It receives a map of item codes to their quantities and should return the
   total discount for that rule as a `Money.t()` struct.
   """
-  @callback apply(map()) :: Money.t()
+  @callback apply(item_counts :: map(), config :: keyword()) :: Money.t()
 end

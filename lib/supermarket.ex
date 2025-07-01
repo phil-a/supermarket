@@ -1,18 +1,6 @@
 defmodule Supermarket do
   @moduledoc """
-  Documentation for `Supermarket`.
+  The main application module for the Supermarket project.
+  Currently, the primary logic is handled within the `Supermarket.Checkout` module.
   """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Supermarket.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
 end

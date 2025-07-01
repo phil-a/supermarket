@@ -5,14 +5,7 @@ defmodule Supermarket.Checkout do
   """
 
   alias Supermarket.Product
-  alias Supermarket.PricingRules.{BogoGreenTeaRule, ThreeOrMoreStrawberryRule, ThreeOrMoreCoffeeRule}
-
-  # All current rules that are applied to the checkout process
-  @rules [
-    BogoGreenTeaRule,
-    ThreeOrMoreStrawberryRule,
-    ThreeOrMoreCoffeeRule
-  ]
+  alias Supermarket.PricingRules.{BuyOneGetOneFreeRule, BulkFixedDiscountRule, BulkFractionalDiscountRule}
 
   @doc "Calculates the total cost of items in the cart."
   @spec total(list(atom)) :: Money.t()
@@ -23,20 +16,37 @@ defmodule Supermarket.Checkout do
     Money.sub!(gross_total, total_discount)
   end
 
-  # Calculates the total cost of items in the cart
+  # Calculates the gross total price before discounts applied.
   defp calculate_gross_total(item_counts) do
-    Enum.reduce(item_counts, Money.new(0, :GBP), fn {code, qty}, acc ->
-      {:ok, %{price: price}} = Product.fetch(code)
-      price_for_items = Money.mult!(price, qty)
-      Money.add!(acc, price_for_items)
+    Enum.reduce(item_counts, Money.new(0, :GBP), fn {product_code, quantity}, acc ->
+      price = Product.get_price(product_code)
+      line_total = Money.mult!(price, quantity)
+      Money.add!(acc, line_total)
     end)
   end
 
   # Calculates the total discount based on the applied pricing rules.
   defp calculate_total_discount(item_counts) do
-    Enum.reduce(@rules, Money.new(0, :GBP), fn rule_module, acc ->
-      discount = rule_module.apply(item_counts)
+    Enum.reduce(rules(), Money.new(0, :GBP), fn rule, acc ->
+      discount = rule.__struct__.apply(rule, item_counts)
       Money.add!(acc, discount)
     end)
+  end
+
+  # all active pricing rules as structs
+  defp rules do
+    [
+      %BuyOneGetOneFreeRule{product_code: :GR1},
+      %BulkFixedDiscountRule{
+        product_code: :SR1,
+        min_quantity: 3,
+        new_price: Money.new(450, :GBP)
+      },
+      %BulkFractionalDiscountRule{
+        product_code: :CF1,
+        min_quantity: 3,
+        price_fraction: {2, 3} # numerator, denominator
+      }
+    ]
   end
 end

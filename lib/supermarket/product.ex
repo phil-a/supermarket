@@ -1,12 +1,29 @@
 defmodule Supermarket.Product do
-  @moduledoc "Defines the product catalog and provides a lookup function."
+  @moduledoc "Defines the product structure and products."
+  defstruct [:code, :name, :price]
 
-  @products %{
-    gr1: %{name: "Green tea", price: Money.new(311, :GBP)},
-    sr1: %{name: "Strawberries", price: Money.new(500, :GBP)},
-    cf1: %{name: "Coffee", price: Money.new(1123, :GBP)}
-  }
+  @doc "Returns a map of all products."
+  def all do
+    products_data()
+  end
 
-  @spec fetch(atom) :: {:ok, map()} | :error
-  def fetch(product_code), do: Map.fetch(@products, product_code)
+  @doc """
+  Finds the price for a given product code.
+
+  Raises an error if the product code does not exist.
+  """
+  @spec get_price(atom()) :: Money.t()
+  def get_price(product_code) do
+    product = Map.fetch!(products_data(), product_code)
+    product.price
+  end
+
+  # function holds our data, to be swapped by a database or external service later.
+  defp products_data do
+    %{
+      GR1: %__MODULE__{code: :GR1, name: "Green Tea", price: Money.new(311, :GBP)},
+      SR1: %__MODULE__{code: :SR1, name: "Strawberries", price: Money.new(500, :GBP)},
+      CF1: %__MODULE__{code: :CF1, name: "Coffee", price: Money.new(1123, :GBP)}
+    }
+  end
 end
