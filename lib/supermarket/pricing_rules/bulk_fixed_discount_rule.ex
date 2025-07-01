@@ -6,12 +6,11 @@ defmodule Supermarket.PricingRules.BulkFixedDiscountRule do
   @behaviour Supermarket.PricingRule
 
   alias Supermarket.Product
-  alias Supermarket.PricingRules.BulkFixedDiscountRule
 
   defstruct [:product_code, :min_quantity, :new_price]
 
   @impl Supermarket.PricingRule
-  def apply(%BulkFixedDiscountRule{product_code: code, min_quantity: min_qty, new_price: new_price}, item_counts) do
+  def apply(%__MODULE__{product_code: code, min_quantity: min_qty, new_price: new_price}, item_counts) do
     quantity = Map.get(item_counts, code, 0)
 
     if quantity >= min_qty do

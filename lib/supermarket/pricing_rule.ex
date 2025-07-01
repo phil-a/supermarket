@@ -1,12 +1,12 @@
 defmodule Supermarket.PricingRule do
   @moduledoc "A behaviour for defining flexible pricing rules."
 
-  @doc """
-  Calculates a discount based on a map of item counts.
+  @type t :: struct()
 
-  This callback should be implemented by any module that acts as a pricing rule.
-  It receives a map of item codes to their quantities and should return the
-  total discount for that rule as a `Money.t()` struct.
+  @type item_counts :: %{String.t() => non_neg_integer()}
+
+  @doc """
+  Applies a pricing rule and returns the calculated discount as a Money struct.
   """
-  @callback apply(item_counts :: map(), config :: keyword()) :: Money.t()
+  @callback apply(t(), item_counts()) :: Money.t()
 end

@@ -4,8 +4,8 @@ defmodule Supermarket.Checkout do
   and calculating the total cost of items in the cart.
   """
 
+  alias Supermarket.PricingRules.{BulkFixedDiscountRule, BulkFractionalDiscountRule, BuyOneGetOneFreeRule}
   alias Supermarket.Product
-  alias Supermarket.PricingRules.{BuyOneGetOneFreeRule, BulkFixedDiscountRule, BulkFractionalDiscountRule}
 
   @doc "Calculates the total cost of items in the cart."
   @spec total(list(atom)) :: Money.t()
