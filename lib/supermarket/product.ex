@@ -8,6 +8,18 @@ defmodule Supermarket.Product do
   end
 
   @doc """
+  Creates a new product with the given code, name, and price.
+  Price should be in pence (integer).
+  """
+  def new(code, name, price) do
+    %__MODULE__{
+      code: code,
+      name: name,
+      price: price
+    }
+  end
+
+  @doc """
   Finds the price for a given product code.
 
   Raises an error if the product code does not exist.

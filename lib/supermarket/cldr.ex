@@ -9,5 +9,5 @@ defmodule Supermarket.Cldr do
     locales: ["en-GB", "fr", "es"],
     default_locale: "en-GB",
 
-    providers: [Cldr.Number, Cldr.Currency]
+    providers: [Cldr.Number]
 end
